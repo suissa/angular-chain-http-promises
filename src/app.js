@@ -1,27 +1,28 @@
 angular.module('myApp', [])
 .service('CEPService', CEPService)
-.controller('MainCtrl', function ($scope, $http, CEPService) {
+.controller('MainCtrl', MainCtrl);
 
+function MainCtrl ($scope, $http, CEPService) {
+
+  var vm = this
   CEPService.find('06608430')
   .then((json) => {
-    console.log('1', json)
     $scope.part1 = json.data; 
     
     return CEPService.find('80610905');
   })
   .then((json) => {
-    console.log('2', json)
     $scope.part2 = json.data; 
     
-    return CEPService.find('83605490');
+    return CEPService.find('80510170');
   })
   .then((json) => {
-    console.log('3', json)
     $scope.part3 = json.data; 
   });
-});
+}
+MainCtrl['$inject'] = ['$scope', '$http', 'CEPService']
 
-function CEPService($http) {
+function CEPService ($http) {
   const BASE_URL = 'https://crossorigin.me/http://labs.edysegura.com/busca-por-cep/cep/endereco.php?cep='
   
   this.find = function (cep) {
