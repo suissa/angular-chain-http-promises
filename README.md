@@ -9,7 +9,6 @@ angular.module('myApp', [])
 
 function MainCtrl ($scope, $http, CEPService) {
 
-  var vm = this
   CEPService.find('06608430')
   .then((json) => {
     $scope.part1 = json.data; 
@@ -35,4 +34,4 @@ function CEPService ($http) {
   }
 }
 CEPService['$inject'] = ['$http']
-```
+``
