@@ -14,9 +14,11 @@ function MainCtrl ($scope, $http, CEPService) {
 Mostrando as 2 formas onde cada resposta é enviada diretamente ao $scope
 e usando um Array externo que é populado a cada promise
 e na depois de todas ocorrerem uso o finally para jogar o Array p/ o $scope
+e pegando os erros com catch
 */
 
   var enderecos = []
+  $scope.error = false
   CEPService.find('06608430')
   .then((json) => {
     $scope.part1 = json.data; 
@@ -32,14 +34,18 @@ e na depois de todas ocorrerem uso o finally para jogar o Array p/ o $scope
     $scope.part3 = json.data; 
     enderecos.push(json.data);
   })
+  .catch(function(err) {
+    $scope.errorMessage = 'Deu merda: ' + err.toString();
+    $scope.error = true
+  })
   .finally(() => {
-    $scope.enderecos = enderecos;
+    if(!$scope.error) $scope.enderecos = enderecos;
   });
 }
 MainCtrl['$inject'] = ['$scope', '$http', 'CEPService']
 
 function CEPService ($http) {
-  const BASE_URL = 'https://crossorigin.me/http://labs.edysegura.com/busca-por-cep/cep/endereco.php?cep='
+  const BASE_URL = 'http://labs.edysegura.com/busca-por-cep/cep/endereco.php?cep='
   
   this.find = function (cep) {
     return $http.get(BASE_URL + cep)
