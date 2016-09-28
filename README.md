@@ -1,6 +1,7 @@
 # angular-chain-http-promises
 
-Example how chain promises with Angular´s $http 
+Example how chain promises with Angular´s $http.
+
 
 ```js
 angular.module('myApp', [])
@@ -9,19 +10,30 @@ angular.module('myApp', [])
 
 function MainCtrl ($scope, $http, CEPService) {
 
+/**
+Mostrando as 2 formas onde cada resposta é enviada diretamente ao $scope
+e usando um Array externo que é populado a cada promise
+e na depois de todas ocorrerem uso o finally para jogar o Array p/ o $scope
+*/
+
+  var enderecos = []
   CEPService.find('06608430')
   .then((json) => {
     $scope.part1 = json.data; 
-    
+    enderecos.push(json.data);
     return CEPService.find('80610905');
   })
   .then((json) => {
     $scope.part2 = json.data; 
-    
+    enderecos.push(json.data);
     return CEPService.find('80510170');
   })
   .then((json) => {
     $scope.part3 = json.data; 
+    enderecos.push(json.data);
+  })
+  .finally(() => {
+    $scope.enderecos = enderecos;
   });
 }
 MainCtrl['$inject'] = ['$scope', '$http', 'CEPService']
@@ -34,4 +46,5 @@ function CEPService ($http) {
   }
 }
 CEPService['$inject'] = ['$http']
+
 ``
