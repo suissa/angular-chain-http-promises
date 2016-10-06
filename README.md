@@ -38,9 +38,6 @@ e pegando os erros com catch
     $scope.errorMessage = 'Deu merda: ' + err.toString();
     $scope.error = true
   })
-  .finally(() => {
-    if(!$scope.error) $scope.enderecos = enderecos;
-  });
 }
 MainCtrl['$inject'] = ['$scope', '$http', 'CEPService']
 
