@@ -17,7 +17,7 @@ e na depois de todas ocorrerem uso o finally para jogar o Array p/ o $scope
 e pegando os erros com catch
 */
 
-  var enderecos = []
+  const enderecos = []
   $scope.error = false
   CEPService.find('06608430')
   .then((json) => {
@@ -50,4 +50,4 @@ function CEPService ($http) {
 }
 CEPService['$inject'] = ['$http']
 
-``
+```
